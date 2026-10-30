@@ -1,6 +1,6 @@
 # 🤖 Session Agent IA : construire un agent de prospection avec Claude
 
-Atelier pratique en **4 notebooks Jupyter** pour apprendre à concevoir, sécuriser et orchestrer des **agents IA** avec l'API Anthropic (Claude), Apify, LangGraph et CrewAI.
+Atelier pratique en **4 notebooks Jupyter** pour apprendre à concevoir, sécuriser et orchestrer des **agents IA** avec l'API Anthropic (Claude), Apify, LangGraph et CrewAI, complété par une **application Streamlit** pour utiliser l'agent depuis le navigateur.
 
 > **Fil rouge** : un **agent de prospection** qui cherche des commerces sur Google Maps (via Apify), rédige des messages d'approche personnalisés et **demande votre accord avant tout envoi**.
 
@@ -92,6 +92,8 @@ jupyter notebook
 
 Ouvrez ensuite `notebooks/01_Fondations_LLM_et_JSON.ipynb`.
 
+Pour l'application web, à la place de l'étape 5 : `streamlit run app/app.py` (voir [Application Streamlit](#️-application-streamlit)).
+
 ---
 
 ## 🔑 Configuration (`.env`)
@@ -131,6 +133,8 @@ Une interface web pour utiliser l'agent sans notebook. Lancez-la **depuis la rac
 ```bash
 streamlit run app/app.py
 ```
+
+L'application lit le même fichier `.env` que les notebooks et réutilise la boîte à outils `notebooks/prospection.py`. La barre latérale indique si les clés Anthropic et Apify sont détectées, les modèles utilisés, et permet de régler le **budget** de l'agent (en FCFA) ; elle affiche aussi le total dépensé depuis le lancement.
 
 | Onglet | Ce qu'on y fait |
 |---|---|
@@ -175,7 +179,7 @@ python serveur_mcp_prospection.py
 | Commerces marqués « (démo) » | `APIFY_TOKEN` est vide : ajoutez-le pour obtenir de vraies données. |
 | Apify est lent | Normal : une recherche prend 20 à 60 s. Les résultats sont ensuite mis en cache. |
 | `NotFoundError` sur le modèle | Vérifiez `MODELE` et `MODELE_RAPIDE` dans `.env`. |
-
+| `streamlit : commande introuvable` | Activez l'environnement virtuel, ou lancez `python -m streamlit run app/app.py`. |
 ---
 
 ## 🔒 Sécurité
