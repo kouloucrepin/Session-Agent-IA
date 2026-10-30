@@ -37,7 +37,6 @@ Atelier pratique en **4 notebooks Jupyter** pour apprendre à concevoir, sécuri
 
 ```
 Session-Agent-IA/
-├── Atelier_Agents_IA.pptx          ← support de présentation de l'atelier
 ├── .env.example                    ← modèle de configuration (à copier en .env)
 ├── requirements.txt                ← dépendances Python
 ├── README.md

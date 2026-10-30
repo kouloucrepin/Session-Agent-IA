@@ -13,3 +13,6 @@ venv/
 
 # Fichiers temporaires Office
 ~$*
+
+# Support de présentation (non versionné)
+*.pptx
