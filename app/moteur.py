@@ -6,11 +6,12 @@ On réutilise la boucle agentique de notebooks/prospection.py et on
 messages rédigés, afin de les présenter à l'humain pour validation.
 """
 import datetime
+import hmac
 import re
 import sys
 from dataclasses import dataclass, replace
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Mapping
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "notebooks"))
 
@@ -183,3 +184,17 @@ def refuser(contact: Contact) -> Contact:
 def remplacer(contacts: tuple[Contact, ...], nouveau: Contact) -> tuple[Contact, ...]:
     """Renvoie une nouvelle liste où le contact de même id est remplacé."""
     return tuple(nouveau if c.id == nouveau.id else c for c in contacts)
+
+
+def variables_depuis_secrets(secrets: Mapping, environ: Mapping) -> dict[str, str]:
+    """Variables à ajouter à l'environnement depuis les secrets Streamlit Cloud.
+
+    Seules les valeurs simples sont gardées (pas les sections), et une variable
+    déjà définie (par exemple dans .env) n'est jamais écrasée.
+    """
+    return {nom: str(valeur) for nom, valeur in secrets.items()
+            if isinstance(valeur, (str, int, float)) and nom not in environ}
+
+
+def mot_de_passe_correct(saisi: str, attendu: str) -> bool:
+    return bool(saisi) and hmac.compare_digest(saisi.encode(), attendu.encode())

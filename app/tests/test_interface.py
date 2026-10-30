@@ -117,3 +117,13 @@ def test_erreur_de_l_agent_est_affichee(app_vide, monkeypatch):
     monkeypatch.setattr(moteur, "lancer_agent", plante)
     next(b for b in at.button if b.label == "🚀 Lancer l'agent").click().run()
     assert any("clé invalide" in e.value for e in at.error)
+
+
+def test_mot_de_passe_bloque_puis_ouvre_l_application(monkeypatch):
+    monkeypatch.setenv("APP_MOT_DE_PASSE", "atelier")
+    at = AppTest.from_file(str(DOSSIER_APP / "app.py"), default_timeout=30).run()
+    assert not at.tabs
+    at.text_input[0].input("faux").run()
+    assert at.error and not at.tabs
+    at.text_input[0].input("atelier").run()
+    assert [t.label for t in at.tabs] == ["🤖 Agent", "✅ Validation"]

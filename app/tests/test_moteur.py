@@ -128,3 +128,20 @@ def test_remplacer_renvoie_une_nouvelle_liste():
     nouveaux = moteur.remplacer(contacts, contact(id=1, nom="Changé"))
     assert [c.nom for c in nouveaux] == ["Boulangerie Teranga", "Changé"]
     assert contacts[1].nom == "Autre"
+
+
+def test_variables_depuis_secrets_garde_les_textes_simples():
+    secrets = {"ANTHROPIC_API_KEY": "cle", "BUDGET_MAX_FCFA": 300, "section": {"a": 1}}
+    assert moteur.variables_depuis_secrets(secrets, {}) == {"ANTHROPIC_API_KEY": "cle",
+                                                             "BUDGET_MAX_FCFA": "300"}
+
+
+def test_variables_depuis_secrets_ne_remplace_pas_l_environnement():
+    secrets = {"MODELE": "secret", "APIFY_TOKEN": "jeton"}
+    assert moteur.variables_depuis_secrets(secrets, {"MODELE": "local"}) == {"APIFY_TOKEN": "jeton"}
+
+
+def test_mot_de_passe_correct():
+    assert moteur.mot_de_passe_correct("atelier", "atelier")
+    assert not moteur.mot_de_passe_correct("mauvais", "atelier")
+    assert not moteur.mot_de_passe_correct("", "atelier")

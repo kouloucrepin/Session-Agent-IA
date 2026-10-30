@@ -1,0 +1,7 @@
+# Dépendances de l'application seule (utilisées par Streamlit Community Cloud,
+# qui lit en priorité le requirements.txt du dossier de app.py).
+streamlit>=1.40
+anthropic
+python-dotenv
+pydantic
+apify-client

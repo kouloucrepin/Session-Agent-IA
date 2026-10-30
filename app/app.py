@@ -32,6 +32,27 @@ def charger_prospection():
     return prospection
 
 
+def lire_secrets() -> dict:
+    """Secrets Streamlit Cloud (ou .streamlit/secrets.toml) ; vide s'il n'y en a pas."""
+    try:
+        return dict(st.secrets)
+    except Exception:  # aucun fichier de secrets : on se contente du .env
+        return {}
+
+
+def exiger_mot_de_passe(attendu: str):
+    """Si APP_MOT_DE_PASSE est défini, bloque la page tant qu'il n'est pas saisi."""
+    if not attendu or st.session_state.get("acces_ok"):
+        return
+    saisi = st.text_input("Mot de passe de l'atelier", type="password")
+    if moteur.mot_de_passe_correct(saisi, attendu):
+        st.session_state.acces_ok = True
+        st.rerun()
+    if saisi:
+        st.error("Mot de passe incorrect.")
+    st.stop()
+
+
 def injecter_style():
     css = (Path(__file__).parent / "style.css").read_text(encoding="utf-8")
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
@@ -135,11 +156,15 @@ def main():
     st.markdown("<div class='bandeau'><h1>Agent de prospection</h1>"
                 "<p>L'agent cherche des commerces et rédige les messages. "
                 "<b>Vous</b> décidez de ce qui part.</p></div>", unsafe_allow_html=True)
+    secrets = lire_secrets()
+    os.environ.update(moteur.variables_depuis_secrets(secrets, os.environ))
+    exiger_mot_de_passe(os.getenv("APP_MOT_DE_PASSE", ""))
     try:
         prospection = charger_prospection()
     except Exception as e:
         st.error(f"Impossible de charger l'agent : {e}\n\n"
-                 "Vérifiez que le fichier `.env` contient `ANTHROPIC_API_KEY`, puis relancez l'application.")
+                 "Vérifiez que `ANTHROPIC_API_KEY` est défini dans le fichier `.env` "
+                 "(ou dans les *Secrets* de Streamlit Cloud), puis relancez l'application.")
         st.stop()
 
     budget = barre_laterale(prospection)

@@ -41,7 +41,7 @@ Session-Agent-IA/
 ├── .env.example                    ← modèle de configuration (à copier en .env)
 ├── requirements.txt                ← dépendances Python
 ├── README.md
-├── .streamlit/config.toml          ← thème de l'application
+├── .streamlit/                     ← thème (config.toml) et modèle de secrets
 ├── app/                            ← application Streamlit (voir plus bas)
 └── notebooks/
     ├── 01_Fondations_LLM_et_JSON.ipynb
@@ -156,6 +156,23 @@ app/
 ```
 
 Tests : `python -m pytest app/tests`
+
+### ☁️ Mettre l'application en ligne (Streamlit Community Cloud, gratuit)
+
+1. Ouvrez ce lien (connexion avec votre compte GitHub) :
+   **[Déployer sur Streamlit Cloud](https://share.streamlit.io/deploy?repository=kouloucrepin/Session-Agent-IA&branch=main&mainModule=app/app.py)**
+   Le dépôt, la branche `main` et le fichier `app/app.py` sont déjà remplis.
+2. Dans **Advanced settings**, choisissez Python **3.12** et collez vos secrets (modèle : `.streamlit/secrets.toml.example`) :
+   ```toml
+   ANTHROPIC_API_KEY = "sk-ant-..."
+   APIFY_TOKEN = ""
+   APP_MOT_DE_PASSE = "choisissez-un-mot-de-passe"
+   ```
+3. Choisissez l'adresse de l'application (par exemple `agent-prospection.streamlit.app`) puis cliquez sur **Deploy**.
+
+Streamlit Cloud installe uniquement `app/requirements.txt` (pas Jupyter ni CrewAI), donc l'installation est rapide.
+
+> ⚠️ Une application en ligne est **publique** : sans `APP_MOT_DE_PASSE`, n'importe qui peut lancer l'agent avec **votre** clé Anthropic. Gardez aussi un plafond de dépense sur votre compte Anthropic. Sur Streamlit Cloud, le dossier `donnees/` (cache et envois simulés) est effacé à chaque redémarrage.
 
 ---
 

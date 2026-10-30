@@ -1,5 +1,6 @@
 # Secrets
 .env
+.streamlit/secrets.toml
 
 # Données générées pendant l'atelier (cache Apify, journal, envois simulés)
 donnees/
