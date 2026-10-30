@@ -14,6 +14,7 @@ Atelier pratique en **4 notebooks Jupyter** pour apprendre à concevoir, sécuri
 - [Installation](#-installation)
 - [Configuration (`.env`)](#-configuration-env)
 - [Parcours de l'atelier](#-parcours-de-latelier)
+- [Application Streamlit](#️-application-streamlit)
 - [Bonus : serveur MCP](#-bonus--serveur-mcp)
 - [Dépannage](#-dépannage)
 - [Sécurité](#-sécurité)
@@ -40,6 +41,8 @@ Session-Agent-IA/
 ├── .env.example                    ← modèle de configuration (à copier en .env)
 ├── requirements.txt                ← dépendances Python
 ├── README.md
+├── .streamlit/config.toml          ← thème de l'application
+├── app/                            ← application Streamlit (voir plus bas)
 └── notebooks/
     ├── 01_Fondations_LLM_et_JSON.ipynb
     ├── 02_Outils_et_boucle_agentique.ipynb
@@ -118,6 +121,37 @@ Suivez les notebooks **dans l'ordre** : chacun s'appuie sur le précédent.
 | 04 | **Frameworks et architectures** | 40 min | LangGraph (workflow, pause/reprise, agent en graphe), CrewAI, superviseur multi-agents, protocole A2A |
 
 **Durée totale : environ 3 h 05.**
+
+---
+
+## 🖥️ Application Streamlit
+
+Une interface web pour utiliser l'agent sans notebook. Lancez-la **depuis la racine du dépôt** :
+
+```bash
+streamlit run app/app.py
+```
+
+| Onglet | Ce qu'on y fait |
+|---|---|
+| 🤖 **Agent** | On écrit sa demande (ou on choisit un exemple), on clique sur **Lancer l'agent** et on suit en direct les outils appelés, puis on lit la réponse et le coût en FCFA. |
+| ✅ **Validation** | On clique sur un contact trouvé pour voir sa fiche et le message rédigé (dans une bulle façon WhatsApp). On peut le **modifier**, le **régénérer** avec un autre ton, le **refuser** ou l'**envoyer**. |
+
+Le code couleur montre l'avancement : 🟠 à valider, 🟢 envoyé (la carte « flashe » en vert au moment de l'envoi), 🔴 refusé, ⚪ sans message.
+Avant tout envoi, l'application vérifie que le numéro existe et qu'il est au format `+221…`, et que le message fait 600 caractères au plus.
+
+> Les envois restent **simulés** : ils sont seulement écrits dans `donnees/envois_simules.log`.
+
+```
+app/
+├── app.py           ← interface : barre latérale et onglet Agent
+├── validation.py    ← onglet Validation (cartes, bulle, boutons)
+├── moteur.py        ← logique sans interface : lancement de l'agent, envoi, refus
+├── style.css        ← couleurs et animations
+└── tests/           ← tests (pytest), sans appel à l'API
+```
+
+Tests : `python -m pytest app/tests`
 
 ---
 

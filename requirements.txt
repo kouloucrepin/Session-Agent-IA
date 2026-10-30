@@ -12,3 +12,6 @@ langgraph
 crewai[anthropic]
 # Bonus MCP (notebook 02)
 mcp
+# Application Streamlit (dossier app/)
+streamlit>=1.40
+pytest

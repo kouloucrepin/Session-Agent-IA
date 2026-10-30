@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --encre: #1f2a2e;
+  --sable: #fbf8f3;
+  --carte: #ffffff;
+  --trait: #e7dfd2;
+  --doux: #6b7280;
+  --a-valider: #d97706;
+  --a-valider-fond: #fff7ea;
+  --envoye: #15803d;
+  --envoye-fond: #ecfdf3;
+  --refuse: #b91c1c;
+  --refuse-fond: #fef1f1;
+  --sans: #9ca3af;
+  --sans-fond: #f5f5f4;
+  --bulle: #dcf8c6;
+  --duree: 450ms;
+  --courbe: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html, body, [class*="css"], .stMarkdown, .stTextArea textarea { font-family: 'Inter', sans-serif; }
+h1, h2, h3, .titre { font-family: 'Fraunces', serif !important; letter-spacing: -0.01em; }
+
+.bandeau { margin: -1rem 0 1.25rem; }
+.bandeau h1 { font-size: 2.4rem; margin: 0; color: var(--encre); }
+.bandeau p { color: var(--doux); margin: .25rem 0 0; font-size: 1.02rem; }
+
+/* ---------- Cartes contact ---------- */
+.carte {
+  position: relative;
+  background: var(--carte);
+  border: 1px solid var(--trait);
+  border-left: 6px solid var(--couleur);
+  border-radius: 14px;
+  padding: .8rem 1rem .7rem;
+  margin-bottom: .35rem;
+  transition: border-color var(--duree) var(--courbe), background-color var(--duree) var(--courbe),
+              box-shadow var(--duree) var(--courbe), transform var(--duree) var(--courbe);
+}
+.carte.choisie { box-shadow: 0 8px 24px -12px rgba(31, 42, 46, .35); transform: translateX(4px); }
+.carte .nom { font-weight: 600; color: var(--encre); font-size: .98rem; padding-right: 6.5rem; }
+.carte .meta { color: var(--doux); font-size: .82rem; margin-top: .15rem; }
+
+.carte.a_valider    { --couleur: var(--a-valider); }
+.carte.envoye       { --couleur: var(--envoye); background: var(--envoye-fond); }
+.carte.refuse       { --couleur: var(--refuse); background: var(--refuse-fond); opacity: .8; }
+.carte.sans_message { --couleur: var(--sans); background: var(--sans-fond); }
+
+.pastille {
+  position: absolute; top: .7rem; right: .8rem;
+  font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em;
+  padding: .15rem .55rem; border-radius: 999px; color: #fff; background: var(--couleur);
+}
+
+/* Le contact qui vient d'être envoyé « flashe » en vert */
+.carte.flash { animation: flash 1.4s var(--courbe); }
+@keyframes flash {
+  0%   { background: var(--a-valider-fond); border-left-color: var(--a-valider); transform: scale(1); }
+  35%  { background: #bbf7d0; border-left-color: var(--envoye); transform: scale(1.03); }
+  100% { background: var(--envoye-fond); transform: scale(1); }
+}
+
+/* ---------- Fiche détaillée ---------- */
+.fiche {
+  background: var(--carte); border: 1px solid var(--trait); border-radius: 18px;
+  padding: 1.2rem 1.4rem; margin-bottom: 1rem;
+}
+.fiche h3 { margin: 0 0 .3rem; font-size: 1.5rem; }
+.fiche .ligne { color: var(--doux); font-size: .9rem; margin: .1rem 0; }
+
+/* ---------- Bulle façon WhatsApp ---------- */
+.telephone {
+  background: #efeae2; border-radius: 18px; padding: 1.2rem; margin-bottom: .8rem;
+  background-image: radial-gradient(rgba(0,0,0,.035) 1px, transparent 1px); background-size: 14px 14px;
+}
+.bulle {
+  max-width: 88%; margin-left: auto; background: var(--carte); color: var(--encre);
+  border-radius: 12px 12px 2px 12px; padding: .7rem .9rem .45rem;
+  box-shadow: 0 1px 1px rgba(0,0,0,.08); white-space: pre-wrap; line-height: 1.45;
+  border: 2px dashed var(--a-valider);
+  transition: background-color var(--duree) var(--courbe), border-color var(--duree) var(--courbe);
+}
+.bulle .heure { display: block; text-align: right; font-size: .72rem; color: var(--doux); margin-top: .25rem; }
+.bulle.envoye { background: var(--bulle); border: 2px solid transparent; animation: pop .6s var(--courbe); }
+.bulle.envoye .heure { color: #34b7f1; font-weight: 600; }
+.bulle.refuse { border-color: var(--refuse); opacity: .6; text-decoration: line-through; }
+@keyframes pop { 0% { transform: translateY(8px) scale(.97); opacity: .4; } 100% { transform: none; opacity: 1; } }
+
+/* ---------- Divers ---------- */
+.compteurs { display: flex; gap: .5rem; flex-wrap: wrap; margin: .2rem 0 1rem; }
+.compteurs span {
+  font-size: .82rem; font-weight: 600; padding: .25rem .7rem; border-radius: 999px;
+  border: 1px solid var(--couleur); color: var(--couleur); background: var(--carte);
+}
+.etape { font-family: ui-monospace, Consolas, monospace; font-size: .85rem; }
+.vide { color: var(--doux); text-align: center; padding: 3rem 1rem; border: 2px dashed var(--trait); border-radius: 18px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .carte, .bulle { transition: none; }
+  .carte.flash, .bulle.envoye { animation: none; }
+}
