@@ -1,0 +1,14 @@
+# Secrets
+.env
+
+# Données générées pendant l'atelier (cache Apify, journal, envois simulés)
+donnees/
+
+# Python / Jupyter
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# Fichiers temporaires Office
+~$*

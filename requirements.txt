@@ -1,0 +1,14 @@
+# Atelier Agents IA : dépendances
+# Installation : pip install -r requirements.txt
+anthropic
+python-dotenv
+pydantic
+apify-client
+pandas
+scikit-learn
+jupyter
+# Notebook 04
+langgraph
+crewai[anthropic]
+# Bonus MCP (notebook 02)
+mcp
